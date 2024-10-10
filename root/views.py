@@ -11,3 +11,6 @@ def contactus(request):
 
 def aboutus(request):
     return render(request,"root/about.html")
+
+def agent(request):
+    return render(request,"root/agents.html")

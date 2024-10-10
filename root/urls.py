@@ -1,8 +1,12 @@
 from django.urls import path
-from .views import home, contactus, aboutus
+from .views import home, contactus, aboutus, agent
+
+
+app_name = "root"
 
 urlpatterns = [
-    path("", home),
-    path("contact", contactus),
-    path("about", aboutus),
+    path("", home, name="home"),
+    path("contact", contactus, name="contact"),
+    path("about", aboutus, name="about"),
+    path("agent", agent, name="agent"),
 ]
