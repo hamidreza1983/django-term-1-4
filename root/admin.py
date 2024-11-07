@@ -1,7 +1,15 @@
 from django.contrib import admin
-from .models import Agents, Ability
+from .models import Agents, Ability, Score, Testimonials
 
 admin.site.register(Agents)
 admin.site.register(Ability)
+admin.site.register(Score)
+#admin.site.register(Testimonials)
 
-# Register your models here.
+#@admin.register(Testimonials)
+class TestimonialsCustomPanel(admin.ModelAdmin):
+    list_display = ["title", "stars", "status", "created_at"]
+    list_filter = ["stars", "status"]
+    search_fields = ("title",)
+
+admin.site.register(Testimonials, TestimonialsCustomPanel)

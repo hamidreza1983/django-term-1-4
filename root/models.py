@@ -10,6 +10,30 @@ class Ability(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class Score(models.Model):
+    count = models.IntegerField(default=5)
+
+    def __str__(self):
+        return str(self.count)
+    
+class Testimonials(models.Model):
+    title = models.CharField(max_length=30)
+    logo = models.ImageField(upload_to="tester", default="default.jpg")
+    content = models.TextField()
+    domain = models.CharField(max_length=30)
+    stars = models.ForeignKey(Score, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title
+    
+    def stars_count(self):
+        return range(self.stars.count)
+
 
 class Agents(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
