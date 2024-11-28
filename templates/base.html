@@ -60,7 +60,7 @@
           <li class="dropdown"><a href="#"><span>Categories</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               {% for category in categories %}
-              <li><a href="#">{{category.title}}</a></li>
+              <li><a href={% url 'services:services-category' category=category.title %}>{{category.title}}</a></li>
               {% endfor %}
             </ul>
           </li>

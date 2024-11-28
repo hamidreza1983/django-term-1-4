@@ -35,7 +35,7 @@
 
       <div class="container">
         <form>
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" name="search" class="form-control" placeholder="Search">
           <button type="submit">search</button>
          </form>
 
@@ -51,6 +51,7 @@
               </a>
               <p>{{service.truncate_chars}}</p>
             </div>
+            <p><a href={% url 'services:service-with-creator' name=service.creator.user.username %}>{{service.creator.user.username}}</a></p>
           </div><!-- End Service Item -->
           {% endfor %}
 
@@ -60,10 +61,18 @@
     </section><!-- /Services Section -->
   </div>
   <div class="center-block">
-  <a href="#"><button>prev page<</button>
-  <a href="#"><button>first page<<</button>
-  <a href="#"><button>next page></button>
-  <a href="#"><button>last page>></button>
+    {% if services.has_next and services.has_previous %}
+  <a href={% url 'services:services' %}?page={{first}}><button>first page<<</button>
+  <a href={% url 'services:services' %}?page={{services.previous_page_number}}>><button>prev page<</button>
+  <a href={% url 'services:services' %}?page={{services.next_page_number}}>><button>next page></button>
+  <a href={% url 'services:services' %}?page={{last}}>><button>last page>></button>
+    {% elif services.has_next %}
+    <a href={% url 'services:services' %}?page={{services.next_page_number}}><button>next page></button>
+    <a href={% url 'services:services' %}?page={{last}}><button>last page>></button>
+  {% elif services.has_previous %}
+    <a href={% url 'services:services' %}?page={{first}}><button>first page<<</button>
+    <a href={% url 'services:services' %}?page={{services.previous_page_number}}><button>prev page<</button>
+  {% endif %}
   </div>
 
   </main>

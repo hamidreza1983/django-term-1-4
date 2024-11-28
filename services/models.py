@@ -1,4 +1,5 @@
 from django.db import models
+from root.models import Agents
 
 # Create your models here.
 
@@ -18,6 +19,7 @@ class Special_services(models.Model):
 
 class Services(models.Model):
     title = models.CharField(max_length=200)
+    creator = models.ForeignKey(Agents, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="services", default="default.jpg")
     content = models.TextField()
     specials = models.ManyToManyField(Special_services)

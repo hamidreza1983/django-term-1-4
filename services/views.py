@@ -1,11 +1,41 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Services
+from django.core.paginator import Paginator
 
-def services(request):
-    service = Services.objects.filter(status=True)
+def services(request, **kwargs):
+
+    
+    if kwargs.get("category"):
+        service = Services.objects.filter(category__title=kwargs.get("category"), status=True)
+        
+    elif kwargs.get("name"):
+        service = Services.objects.filter(creator__user__username=kwargs.get("name"), status=True)
+        
+    elif request.GET.get("search"):
+        search = request.GET.get("search")
+        service = Services.objects.filter(content__contains=search, status=True)
+        
+    else:
+        service = Services.objects.filter(status=True)
+        
+    service_paginate = Paginator(service, 1)
+    first_page = 1
+    last_page = service_paginate.num_pages
+
+    try:
+        page_number = request.GET.get("page")
+        service = service_paginate.get_page(page_number)
+    except:
+        page_number = first_page
+        service = service_paginate.get_page(first_page)
+    
     context = {
-        "services": service
+        "services":service,
+        "first" : first_page,
+        "last" : last_page
     }
+
+    
     return render(request, 'services/services.html', context=context)
 
 
