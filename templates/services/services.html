@@ -71,7 +71,7 @@
     <a href={% url 'services:services' %}?page={{last}}><button>last page>></button>
   {% elif services.has_previous %}
     <a href={% url 'services:services' %}?page={{first}}><button>first page<<</button>
-    <a href={% url 'services:services' %}?page={{services.previous_page_number}}><button>prev page<</button>
+    <a href={% url 'services:services' %}?page={{services.previous_page_number}}  ><button>prev page<</button>
   {% endif %}
   </div>
 
