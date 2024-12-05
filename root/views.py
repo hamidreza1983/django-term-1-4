@@ -16,8 +16,43 @@ def home(request):
     }
     return render(request,"root/index.html", context=context)
 
+
+from .models import ContactUs
+from .forms import ContactUsForm
+from django.contrib import messages
+#def contactus(request):
+#    if request.method == "POST":
+#        form =  ContactUsForm(request.POST)
+#        if form.is_valid():
+#            contact = ContactUs()
+#            contact.name = request.POST.get("name")
+#            contact.email = request.POST.get("email")
+#            contact.subject = request.POST.get("subject")   
+#            contact.message = request.POST.get("message")
+#            contact.save()
+#            messages.add_message(request, messages.SUCCESS, "your contact received successfully")
+#            return render(request,"root/contact.html")
+#        else:
+#            messages.add_message(request, messages.ERROR, "your input data is not valid")
+#            return render(request,"root/contact.html")
+#    else:
+#        return render(request,"root/contact.html")
+
 def contactus(request):
-    return render(request,"root/contact.html")
+    if request.method == "POST":
+        form =  ContactUsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "your contact received successfully")
+            return render(request,"root/contact.html")
+        else:
+            messages.add_message(request, messages.ERROR, "your input data is not valid")
+            return render(request,"root/contact.html")
+    else:
+        form = ContactUsForm()
+        context = {'form': form}
+        return render(request,"root/contact.html", context=context)
+
 
 def aboutus(request):
     return render(request,"root/about.html")

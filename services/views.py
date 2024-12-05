@@ -58,9 +58,30 @@ def services(request, **kwargs):
     #except:
     #    return render(request, '404.html')
 
+
+from .forms import CommentForm
+from django.contrib import messages
+from .models import Comments
 def services_detail(request, id):
     service = get_object_or_404(Services, id=id)
+    form  = CommentForm()
+    comments = Comments.objects.filter(status=True, service=service.id)
     context = {
-            'service' : service,
-        }
-    return render(request, 'services/service-details.html', context=context)
+                'service' : service,
+                "form" : form,
+                "comments" : comments
+            }
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+           comment = form.save(commit=False)
+           comment.service = service
+           comment.save()
+           messages.add_message(request, messages.SUCCESS, " اوکی ")
+           return render(request, 'services/service-details.html', context=context)
+        
+        else:
+           messages.add_message(request, messages.ERROR, " اوکی no")
+           return render(request, 'services/service-details.html', context=context)
+    else:
+        return render(request, 'services/service-details.html', context=context)

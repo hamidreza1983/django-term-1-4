@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import Agents, Ability, Score, Testimonials
+from .models import Agents, Ability, Score, Testimonials, ContactUs
 
 admin.site.register(Agents)
 admin.site.register(Ability)
 admin.site.register(Score)
+admin.site.register(ContactUs)
 #admin.site.register(Testimonials)
 
 #@admin.register(Testimonials)

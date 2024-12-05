@@ -77,6 +77,17 @@
               {{service.description}}
             </p>
           </div>
+          {% for comment in comments %}
+           {{ comment.message }}
+          {% endfor %}
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">send your feedback</button>
+          </form>
+          {% for message in messages %}
+          {{ message }}
+          {% endfor %}
 
         </div>
 

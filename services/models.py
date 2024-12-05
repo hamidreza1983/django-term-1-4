@@ -36,3 +36,13 @@ class Services(models.Model):
     
     def truncate_chars(self):
         return self.content[:20]
+    
+
+class Comments(models.Model):
+    service = models.ForeignKey(Services, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    message = models.TextField()
+    status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.service.title
