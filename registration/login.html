@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'title' %}Login{% endblock 'title' %}
+{% block 'content' %}
+    <!-- Page Title -->
+    <div class="page-title" data-aos="fade">
+        <div class="heading">
+          <div class="container">
+            <div class="row d-flex justify-content-center text-center">
+              <div class="col-lg-8">
+                <h1>Login</h1>
+                <p class="mb-0">insert your credentioal for login . if you dont have any account yet , click on SignUp</p>
+              </div>
+              <p></p>
+              <form method="post">
+                {% csrf_token %}
+                <p><input type="text" name="username" placeholder="Username" required="required"></p>
+                <p><input type="password" name="password" placeholder="Password" required="required"></p>
+                <p><button type="submit">Login</button></p>
+                <p><a href="#">Forgot Password?</a></p>
+                <p><a href="#">Sign Up</a></p>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div><!-- End Page Title -->
+{% endblock 'content' %}
