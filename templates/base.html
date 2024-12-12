@@ -64,7 +64,12 @@
               {% endfor %}
             </ul>
           </li>
-          <li><a href="contact.html">Login/Signup</a></li>
+          {% if request.user.is_authenticated %}
+          <li><a href="#">logged as {{ request.user.username }}</a></li>
+          <li><a href={% url "accounts:logout" %}>logout</a></li>
+          {% else %}
+          <li><a href={% url "accounts:login" %}>Login/Signup</a></li>
+          {% endif %}
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

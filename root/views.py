@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from .models import Agents, Testimonials
 from services.models import Services, Category
+from django.contrib.auth.decorators import login_required
 
 
 from django.http import HttpResponse
 
+
+#@login_required
 def home(request):
     agents = Agents.objects.filter(status=True)[:3]
     services = Services.objects.filter(status=True)[:3]
