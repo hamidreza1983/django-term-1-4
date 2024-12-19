@@ -1,5 +1,6 @@
 from django.db import models
 from root.models import Agents
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -40,7 +41,7 @@ class Services(models.Model):
 
 class Comments(models.Model):
     service = models.ForeignKey(Services, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+    name = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     status = models.BooleanField(default=False)
 

@@ -77,9 +77,6 @@
               {{service.description}}
             </p>
           </div>
-          {% for comment in comments %}
-           {{ comment.message }}
-          {% endfor %}
           <form method="post">
             {% csrf_token %}
             {{ form.as_p }}

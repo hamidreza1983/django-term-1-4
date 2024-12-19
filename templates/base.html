@@ -66,6 +66,7 @@
           </li>
           {% if request.user.is_authenticated %}
           <li><a href="#">logged as {{ request.user.username }}</a></li>
+          <li><a href={% url "accounts:change_password" %}>change pass</a></li>
           <li><a href={% url "accounts:logout" %}>logout</a></li>
           {% else %}
           <li><a href={% url "accounts:login" %}>Login/Signup</a></li>

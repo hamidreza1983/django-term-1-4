@@ -78,6 +78,7 @@ def services_detail(request, id):
             if form.is_valid():
                 comment = form.save(commit=False)
                 comment.service = service
+                comment.name = request.user
                 comment.save()
                 messages.add_message(request, messages.SUCCESS, " اوکی ")
                 return render(request, 'services/service-details.html', context=context)
