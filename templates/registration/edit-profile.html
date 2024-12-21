@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'title' %}edit{% endblock 'title' %}
+{% block 'content' %}
+
+    <!-- Page Title -->
+    <div class="page-title" data-aos="fade">
+        <div class="heading">
+          <div class="container">
+            <div class="row d-flex justify-content-center text-center">
+              <div class="col-lg-8">
+                <h1>Edit Profile</h1>
+                <p class="mb-0">Edit your profile</p>
+              </div>
+              <p></p>
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p}}
+                <button type="submit">Save</button>
+            </form>
+            {% for message in messages %}
+              <h2 style="color:red;">{{ message }}</h2>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div><!-- End Page Title -->
+
+
+{% endblock 'content' %}

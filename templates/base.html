@@ -46,7 +46,6 @@
       <a href="index.html" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="{% static 'assets/img/logo.png' %}" alt=""> -->
-        <h1 class="sitename">Estate<span>Agency</span></h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -68,6 +67,8 @@
           <li><a href="#">logged as {{ request.user.username }}</a></li>
           <li><a href={% url "accounts:change_password" %}>change pass</a></li>
           <li><a href={% url "accounts:logout" %}>logout</a></li>
+          <li><a href={% url "accounts:edit_profile" %}>profile</a></li>
+          <li><img src={{request.user.image.url}} length="50" width="50"></li>
           {% else %}
           <li><a href={% url "accounts:login" %}>Login/Signup</a></li>
           {% endif %}

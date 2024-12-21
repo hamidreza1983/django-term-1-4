@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import LoginForm, SignUpForm, ChangePassForm, ResetPassForm, ConfirmPassForm
-from django.contrib.auth.models import User
+from .forms import LoginForm, SignUpForm, ChangePassForm, ResetPassForm, ConfirmPassForm, EditProfile
+from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -144,5 +144,22 @@ def reset_password_confirm(request, token):
 def reset_password_complete(request):
     return render (request, "registration/reset-password-complete.html")
 
+@login_required
 def edit_profile(request):
-    pass
+    user = request.user
+    if request.method == "POST":
+        form = EditProfile(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Profile updated successfully")
+            return redirect("accounts:edit_profile")
+        else:
+            messages.add_message(request, messages.ERROR, "Invalid input data")
+            return redirect("accounts:edit_profile")
+    else:
+        
+        form = EditProfile(instance=user)
+        context = {
+            "form": form,
+        }
+        return render (request, "registration/edit-profile.html", context=context)
