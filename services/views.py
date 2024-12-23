@@ -81,10 +81,10 @@ def services_detail(request, id):
                 comment.name = request.user
                 comment.save()
                 messages.add_message(request, messages.SUCCESS, " اوکی ")
-                return render(request, 'services/service-details.html', context=context)
+                return redirect(request.path_info)
             else:
                 messages.add_message(request, messages.ERROR, " اوکی no")
-                return render(request, 'services/service-details.html', context=context)
+                return redirect(request.path_info)
         else:
             return redirect("accounts:login")
     else:
