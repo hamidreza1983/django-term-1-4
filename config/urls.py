@@ -18,8 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.sitemaps.views import sitemap
+from root.sitemap import RootStaticUrl
+from properties.sitemap import PropertiesStaticUrl, PropertiesDynamicUrl
 
-
+sitemaps = {
+    "static-root" : RootStaticUrl,
+    "static-properties" : PropertiesStaticUrl,
+    "dynamic-properties" : PropertiesDynamicUrl,
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +34,14 @@ urlpatterns = [
     path("services/", include("services.urls")),
     path("properties/", include("properties.urls")),
     path("accounts/", include("accounts.urls")),
+    path(
+    "sitemap.xml",
+    sitemap,
+    {"sitemaps": sitemaps},
+    name="django.contrib.sitemaps.views.sitemap",
+),
+    path('robots.txt', include('robots.urls')),
+    path('captcha/', include('captcha.urls')),
 
 
 ]

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import LoginForm, SignUpForm, ChangePassForm, ResetPassForm, ConfirmPassForm, EditProfile
+from .forms import LoginForm, SignUpForm, ChangePassForm, ResetPassForm, ConfirmPassForm, EditProfile, Captcha
 from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
@@ -27,10 +27,16 @@ def login_user(request):
             else:
                 messages.add_message(request, messages.ERROR, "Invalid credintial")
                 return redirect(request.path_info)
+        else:
+                messages.add_message(request, messages.ERROR, "Invalid captcha")
+                return redirect(request.path_info)
 
             #username = request.POST.get('username').strip()
     else:
-        return render(request, "registration/login.html")
+        context = {
+            "form" : Captcha()
+        }
+        return render(request, "registration/login.html", context=context)
 
 
 @login_required
