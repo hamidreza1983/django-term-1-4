@@ -47,7 +47,7 @@ class Agents(models.Model):
 
 
     def __str__(self):
-        return self.user.first_name
+        return self.user.email
 
 
 class ContactUs(models.Model):

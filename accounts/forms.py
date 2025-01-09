@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from .models import User, Profile
 from captcha.fields import CaptchaField
 
 class Captcha(forms.Form):
@@ -8,7 +8,7 @@ class Captcha(forms.Form):
 
     
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=100)
+    email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     captcha = CaptchaField()
 
@@ -17,7 +17,7 @@ class SignUpForm(UserCreationForm):
     
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ["username", "password1", "password2", "id_code", "phone", "email"]
+        fields = ["email", "password1", "password2"]
 
 
 class ChangePassForm(forms.Form):
@@ -35,5 +35,5 @@ class ConfirmPassForm(forms.Form):
 class EditProfile(forms.ModelForm):
 
     class Meta:
-        model = User
-        fields = ["id_code", "phone", "image"]
+        model = Profile
+        fields = ["id_code", "phone", "image", "username", "address"]
