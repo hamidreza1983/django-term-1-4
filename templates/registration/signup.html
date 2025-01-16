@@ -14,12 +14,9 @@
               <p></p>
               <form method="post">
                 {% csrf_token %}
-                <p><input type="text" name="username" placeholder="Username" required="required"></p>
                 <p><input type="email" name="email" placeholder="email" required="required"></p>
                 <p><input type="password" name="password1" placeholder="Password" required="required"></p>
                 <p><input type="password" name="password2" placeholder="confirm Password" required="required"></p>
-                <p><input type="text" name="phone" placeholder="phone" required="required"></p>
-                <p><input type="text" name="id_code" placeholder="id code" required="required"></p>
                 <p><button type="submit">Signup</button></p>
             </form>
             {% for message in messages %}

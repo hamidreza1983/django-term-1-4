@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Agents, Testimonials
 from services.models import Services, Category
 from django.contrib.auth.decorators import login_required
@@ -44,17 +44,29 @@ from django.contrib import messages
 def contactus(request):
     if request.method == "POST":
         form =  ContactUsForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.SUCCESS, "your contact received successfully")
-            return render(request,"root/contact.html")
+        if request.user.is_authenticated and request.user.has_perm("sites.view_site"):
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "your contact received successfully")
+                return render(request,"root/contact.html")
+            else:
+                messages.add_message(request, messages.ERROR, "your input data is not valid")
+                return render(request,"root/contact.html")
         else:
-            messages.add_message(request, messages.ERROR, "your input data is not valid")
+            messages.add_message(request, messages.ERROR, "sharmondeh shoma bayad doctor bashid")
             return render(request,"root/contact.html")
+
     else:
         form = ContactUsForm()
         context = {'form': form}
         return render(request,"root/contact.html", context=context)
+    
+        # if request.user.is_authenticated and request.user.has_perm("sites.view_site"):
+        #     form = ContactUsForm()
+        #     context = {'form': form}
+        #     return render(request,"root/contact.html", context=context)
+        # else:
+        #     return redirect("accounts:login")
 
 
 def aboutus(request):
