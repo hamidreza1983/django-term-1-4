@@ -165,20 +165,20 @@ def reset_password_complete(request):
     return render (request, "registration/reset-password-complete.html")
 
 @login_required
-def edit_profile(request):
-    user = request.user
+def edit_profile(request, id):
+    user_profile = Profile.objects.get(user=id)
     if request.method == "POST":
-        form = EditProfile(request.POST, request.FILES, instance=user)
+        form = EditProfile(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, "Profile updated successfully")
-            return redirect("accounts:edit_profile")
+            return redirect(request.path_info)
         else:
             messages.add_message(request, messages.ERROR, "Invalid input data")
-            return redirect("accounts:edit_profile")
+            return redirect(request.path_info)
     else:
         
-        form = EditProfile(instance=user)
+        form = EditProfile(instance=user_profile)
         context = {
             "form": form,
         }

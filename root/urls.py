@@ -1,12 +1,14 @@
 from django.urls import path
-from .views import home, contactus, aboutus, agent
+from .views import contactus, AgentsView, HomeView, AboutView, GoogleView
+
 
 
 app_name = "root"
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("", HomeView.as_view(), name="home"),
     path("contact", contactus, name="contact"),
-    path("about", aboutus, name="about"),
-    path("agent", agent, name="agent"),
+    path("about", AboutView.as_view(), name="about"),
+    path("agent", AgentsView.as_view(), name="agent"),
+    path("google", GoogleView.as_view(), name="google"),
 ]

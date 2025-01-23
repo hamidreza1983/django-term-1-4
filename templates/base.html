@@ -67,8 +67,8 @@
           <li><a href="#">logged as {{ request.user.username }}</a></li>
           <li><a href={% url "accounts:change_password" %}>change pass</a></li>
           <li><a href={% url "accounts:logout" %}>logout</a></li>
-          <li><a href={% url "accounts:edit_profile" %}>profile</a></li>
-          <li><img src={{request.user.image.url}} length="50" width="50"></li>
+          <li><a href={% url "accounts:edit_profile" id=request.user.id %}>profile</a></li>
+          <li><img src={{profile.image.url}} length="50" width="50"></li>
           {% else %}
           <li><a href={% url "accounts:login" %}>Login/Signup</a></li>
           {% endif %}
@@ -138,7 +138,7 @@
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
         <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Go to  <a href={% url 'root:home' %}>Home</a>
+        Go to  <a href={% url 'root:google' %}>Google</a>
       </div>
     </div>
 

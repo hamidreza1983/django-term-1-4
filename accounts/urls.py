@@ -13,5 +13,5 @@ urlpatterns = [
     path("reset-password-done/",reset_password_done, name="reset_password_done"),
     path("reset-password-confirm/<str:token>",reset_password_confirm, name="reset_password_confirm"),
     path("reset-password-complete/", reset_password_complete, name="reset_password_complete"),
-    path("edit-profile/",edit_profile, name="edit_profile"),
+    path("edit-profile/<int:id>",edit_profile, name="edit_profile"),
 ]
