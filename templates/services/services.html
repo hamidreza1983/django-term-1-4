@@ -46,7 +46,7 @@
               <div class="icon">
                 <i class="bi bi-activity"></i>
               </div>
-              <a href={% url 'services:services-detail' id=service.id %} class="stretched-link">
+              <a href={% url 'services:services-detail' pk=service.id %} class="stretched-link">
                 <h3>{{service.title}}</h3>
               </a>
               <p>{{service.truncate_chars}}</p>

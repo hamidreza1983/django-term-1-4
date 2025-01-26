@@ -39,7 +39,7 @@
             <div class="service-box">
               <h4>Serices List</h4>
               <div class="services-list">
-                {% for cat in service.category.all %}
+                {% for cat in object.category.all %}
                 <a href="#"><i class="bi bi-arrow-right-circle"></i><span>{{cat.title}}</span></a>
                 {% endfor %}
               </div>
@@ -48,8 +48,8 @@
             <div class="service-box">
               <h4>Download Catalog</h4>
               <div class="download-catalog">
-                <a href={{service.catalog_file}}><i class="bi bi-filetype-pdf"></i><span>catalog_file</span></a>
-                <a href={{service.catalog_doc}}><i class="bi bi-file-earmark-word"></i><span>catalog_doc</span></a>
+                <a href={{object.catalog_file}}><i class="bi bi-filetype-pdf"></i><span>catalog_file</span></a>
+                <a href={{object.catalog_doc}}><i class="bi bi-file-earmark-word"></i><span>catalog_doc</span></a>
               </div>
             </div><!-- End Services List -->
 
@@ -63,18 +63,18 @@
           </div>
 
           <div class="col-lg-8 ps-lg-5" data-aos="fade-up" data-aos-delay="200">
-            <img src={{service.image.url}} alt="" class="img-fluid services-img">
-            <h3>{{service.title}}</h3>
+            <img src={{object.image.url}} alt="" class="img-fluid services-img">
+            <h3>{{object.title}}</h3>
             <p>
-              {{service.content}}
+              {{object.content}}
             </p>
             <ul>
-              {% for sp in service.specials.all %}
+              {% for sp in object.specials.all %}
               <li><i class="bi bi-check-circle"></i> <span>{{sp.service}}</span></li>
               {% endfor %}
             </ul>
             <p>
-              {{service.description}}
+              {{object.description}}
             </p>
           </div>
           <form method="post">
@@ -87,6 +87,9 @@
           {% endfor %}
 
         </div>
+        {% for comment in comments %}
+          {{ comment.message }}
+        {% endfor %}
 
       </div>
 

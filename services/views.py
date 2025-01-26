@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Services
 from django.core.paginator import Paginator
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 class ServicesView(ListView):
     model = Services
@@ -92,30 +92,76 @@ class ServicesView(ListView):
 from .forms import CommentForm
 from django.contrib import messages
 from .models import Comments
-def services_detail(request, id):
-    service = get_object_or_404(Services, id=id)
-    form  = CommentForm()
-    comments = Comments.objects.filter(status=True, service=service.id)
-    context = {
-                'service' : service,
-                "form" : form,
-                "comments" : comments
-            }
-    
-    if request.method == "POST":
+
+class ServiceDetails(DetailView):
+    template_name = 'services/service-details.html'
+    model = Services
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()
+        id = self.kwargs['pk']
+        service = get_object_or_404(Services, id=id)
+        context['comments'] = Comments.objects.filter(status=True, service=service.id)
+        return context
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
         if request.user.is_authenticated:
-            form = CommentForm(request.POST)
             if form.is_valid():
-                comment = form.save(commit=False)
-                comment.service = service
-                comment.name = request.user
-                comment.save()
-                messages.add_message(request, messages.SUCCESS, " اوکی ")
-                return redirect(request.path_info)
+                    id = self.kwargs['pk']
+                    service = get_object_or_404(Services, id=id)
+                    comment = form.save(commit=False)
+                    comment.service = service
+                    comment.name = request.user
+                    comment.save()
+                    messages.add_message(request, messages.SUCCESS, " اوکی ")
+                    return redirect(request.path_info)
             else:
-                messages.add_message(request, messages.ERROR, " اوکی no")
-                return redirect(request.path_info)
+                    messages.add_message(request, messages.ERROR, " اوکی no")
+                    return redirect(request.path_info)
         else:
             return redirect("accounts:login")
-    else:
-        return render(request, 'services/service-details.html', context=context)
+        
+
+
+
+        
+#    def form_valid(self, form, **kwargs):
+#        id = self.kwargs['pk']
+#        service = get_object_or_404(Services, id=id)
+#        comment = form.save(commit=False)
+#        comment.service = service
+#        comment.name = self.request.user
+#        comment.save()
+#        messages.add_message(self.request, messages.SUCCESS, " اوکی ")
+#        return redirect(self.request.path_info)
+    
+
+#        
+#def services_detail(request, id):
+#    service = get_object_or_404(Services, id=id)
+#    form  = CommentForm()
+#    comments = Comments.objects.filter(status=True, service=service.id)
+#    context = {
+#                'service' : service,
+#                "form" : form,
+#                "comments" : comments
+#            }
+#    
+#    if request.method == "POST":
+#        if request.user.is_authenticated:
+#            form = CommentForm(request.POST)
+#            if form.is_valid():
+#                comment = form.save(commit=False)
+#                comment.service = service
+#                comment.name = request.user
+#                comment.save()
+#                messages.add_message(request, messages.SUCCESS, " اوکی ")
+#                return redirect(request.path_info)
+#            else:
+#                messages.add_message(request, messages.ERROR, " اوکی no")
+#                return redirect(request.path_info)
+#        else:
+#            return redirect("accounts:login")
+#    else:
+#        return render(request, 'services/service-details.html', context=context)

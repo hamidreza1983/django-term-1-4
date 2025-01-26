@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import password_validation
 from rest_framework.authtoken.models import Token
 from django.core.mail import send_mail
+from django.views.generic import FormView
 
 
 
@@ -14,30 +15,55 @@ from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
-def login_user(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                print (user.get_user_permissions())
-                return redirect("root:home")
-            else:
-                messages.add_message(request, messages.ERROR, "Invalid credintial")
-                return redirect(request.path_info)
-        else:
-                messages.add_message(request, messages.ERROR, "Invalid captcha")
-                return redirect(request.path_info)
 
-            #username = request.POST.get('username').strip()
-    else:
-        context = {
-            "form" : Captcha()
-        }
-        return render(request, "registration/login.html", context=context)
+class LoginView(FormView):
+    template_name = "registration/login.html"
+    form_class = LoginForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        username = form.cleaned_data['email']
+        password = form.cleaned_data['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(self.request, user)
+            return redirect(self.success_url)
+        else:
+            messages.add_message(self.request, messages.ERROR, "Invalid credintial")
+            return redirect(self.request.path_info)
+    def form_invalid(self, form):
+        messages.add_message(self.request, messages.ERROR, "Invalid captcha or input data")
+        return redirect(self.request.path_info)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = Captcha()
+        return context
+    
+#def login_user(request):
+#    if request.method == 'POST':
+#        form = LoginForm(request.POST)
+#        if form.is_valid():
+#            username = form.cleaned_data['email']
+#            password = form.cleaned_data['password']
+#            user = authenticate(username=username, password=password)
+#            if user is not None:
+#                login(request, user)
+#                print (user.get_user_permissions())
+#                return redirect("root:home")
+#            else:
+#                messages.add_message(request, messages.ERROR, "Invalid credintial")
+#                return redirect(request.path_info)
+#        else:
+#                messages.add_message(request, messages.ERROR, "Invalid captcha")
+#                return redirect(request.path_info)#
+
+#            #username = request.POST.get('username').strip()
+#    else:
+#        context = {
+#            "form" : Captcha()
+#        }
+#        return render(request, "registration/login.html", context=context)
 
 
 @login_required
