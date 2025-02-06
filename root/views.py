@@ -4,6 +4,8 @@ from services.models import Services, Category
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
 class HomeView(TemplateView):
@@ -15,6 +17,10 @@ class HomeView(TemplateView):
         context ['agents'] = Agents.objects.filter(status=True)[:3]
         context ['testers'] = Testimonials.objects.filter(status=True)
         return context
+
+@api_view(["GET"])
+def test(request):
+    return Response({"name" : "hamid reza",})
 
 
 
