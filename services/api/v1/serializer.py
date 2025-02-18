@@ -9,4 +9,4 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Services
-        fields = ["title", "content", "category", "status"]
+        fields = "__all__"
