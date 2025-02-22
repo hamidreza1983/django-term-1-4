@@ -42,6 +42,7 @@ urlpatterns = [
 ),
     path('robots.txt', include('robots.urls')),
     path('captcha/', include('captcha.urls')),
+    path('api-auth/', include('rest_framework.urls')),#  create login form in browsable api
 
 
 ]
