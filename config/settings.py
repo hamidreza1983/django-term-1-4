@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "robots",
     "captcha",
     'rest_framework',
+    'django_filters',
     
 ]
 SITE_ID = 1
