@@ -1,10 +1,3 @@
-class Test:
-    name = "hamid"
-    family = "mehrabi"
+import requests
 
-    def __dict__(self):
-        return {}
-
-obj = Test()
-
-print (obj.__dict__)
+response = requests.get("http://127.0.0.1:8000/api/v1/services/")

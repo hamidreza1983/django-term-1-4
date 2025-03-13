@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "captcha",
     'rest_framework',
     'django_filters',
+    'drf_yasg',
     
 ]
 SITE_ID = 1
@@ -153,3 +154,12 @@ AUTH_USER_MODEL = "accounts.User"
 #         'rest_framework.permissions.IsAuthenticated',
 #     ]
 # }
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}

@@ -4,7 +4,7 @@ from services.models import Services, Comments
 from .serializer import ServiceSerializer, CommentSerializer
 # from rest_framework import status
 # from django.shortcuts import  get_object_or_404
-# from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from .permissions import IsAdminOrReadOnly
 from rest_framework.viewsets import ViewSet, ModelViewSet
 #from rest_framework.views import APIView
@@ -28,7 +28,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 class ServiceView(ModelViewSet):
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
     serializer_class = ServiceSerializer
     queryset = Services.objects.all()
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]

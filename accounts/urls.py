@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
 
 
@@ -14,4 +14,5 @@ urlpatterns = [
     path("reset-password-confirm/<str:token>",reset_password_confirm, name="reset_password_confirm"),
     path("reset-password-complete/", reset_password_complete, name="reset_password_complete"),
     path("edit-profile/<int:id>",edit_profile, name="edit_profile"),
+    path("api/v1/",include("accounts.api.v1.urls")),
 ]
