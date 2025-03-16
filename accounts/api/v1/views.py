@@ -1,12 +1,28 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
-from .serializer import SignupSerializer, CustomeAuthTokenSerializer
+from .serializer import (
+    SignupSerializer, 
+    CustomeAuthTokenSerializer, 
+    CustomJwtSerializer,
+    ChangePasswordSerializer
+)
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
-
 from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+)
+from django.shortcuts import  get_object_or_404
+from accounts.models import User
+
+
+class CustomeObtainView(TokenObtainPairView):
+    serializer_class = CustomJwtSerializer
+
+
+
 
 class LoginApiView(ObtainAuthToken):
     serializer_class = CustomeAuthTokenSerializer
@@ -35,4 +51,19 @@ class SignupApiView(GenericAPIView):
         serialize.is_valid(raise_exception=True)  
         serialize.save()
         return Response({"message" : "user created successfully"}, status=status.HTTP_201_CREATED)
+    
 
+class ChangePassword(GenericAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        pk = self.request.user.id
+        user = get_object_or_404(User, pk=pk)
+        return user
+
+    def put(self, request, *args, **kwargs):
+        serialize = ChangePasswordSerializer(data=request.data, context={"request" : request})
+        serialize.is_valid(raise_exception=True)
+        serialize.change(serialize.validated_data)
+        return Response({"message" : "password change successfully"}, status=status.HTTP_202_ACCEPTED)
