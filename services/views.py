@@ -3,70 +3,72 @@ from .models import Services
 from django.core.paginator import Paginator
 from django.views.generic import ListView, DetailView
 
-class ServicesView(ListView):
-    model = Services
-    template_name = 'services/services.html'
-    context_object_name = "services"
-    paginate_by = 1
-    #queryset = Services.objects.filter(status=True)
+#class ServicesView(ListView):
+#    model = Services
+#    template_name = 'services/services.html'
+#    context_object_name = "services"
+#    paginate_by = 3
+#    #queryset = Services.objects.filter(status=True)#
 
-    def get_queryset(self):
-        if self.kwargs.get("category"):
-            services = self.model.objects.filter(category__title=self.kwargs.get("category"), status=True)
-        elif self.kwargs.get("name"):
-            services = Services.objects.filter(creator__user__email=self.kwargs.get("name"), status=True)
-        elif self.request.GET.get("search"):
-            search = self.request.GET.get("search")
-            services = self.model.objects.filter(content__contains=search, status=True)
+#    def get_queryset(self):
+#        if self.kwargs.get("category"):
+#            services = self.model.objects.filter(category__title=self.kwargs.get("category"), status=True)
+#        elif self.kwargs.get("name"):
+#            services = Services.objects.filter(creator__user__email=self.kwargs.get("name"), status=True)
+#        elif self.request.GET.get("search"):
+#            search = self.request.GET.get("search")
+#            services = self.model.objects.filter(content__contains=search, status=True)
+#        else:
+#            services = Services.objects.filter(status=True)#
+
+#        return services
+#    def get_context_data(self, **kwargs):
+#        context = super().get_context_data(**kwargs)
+#        first = 1
+#        service_paginate = Paginator(self.get_queryset(), 1)
+#        last = service_paginate.num_pages
+#        context ['first'] = first
+#        context ['last'] = last
+#        return context
+    
+
+def services(request, **kwargs):
+     
+    if request.user.is_authenticated and request.user.is_verified:
+        if kwargs.get("category"):
+            service = Services.objects.filter(category__title=kwargs.get("category"), status=True)
+        
+        elif kwargs.get("name"):
+            service = Services.objects.filter(creator__user__username=kwargs.get("name"), status=True)
+        
+        elif request.GET.get("search"):
+            search = request.GET.get("search")
+            service = Services.objects.filter(content__contains=search, status=True)
+        
         else:
-            services = Services.objects.filter(status=True)
-
-        return services
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        first = 1
-        service_paginate = Paginator(self.get_queryset(), 1)
-        last = service_paginate.num_pages
-        context ['first'] = first
-        context ['last'] = last
-        return context
-    
-
-# def services(request, **kwargs):
-
-    
-#     if kwargs.get("category"):
-#         service = Services.objects.filter(category__title=kwargs.get("category"), status=True)
+            service = Services.objects.filter(status=True)
         
-#     elif kwargs.get("name"):
-#         service = Services.objects.filter(creator__user__username=kwargs.get("name"), status=True)
-        
-#     elif request.GET.get("search"):
-#         search = request.GET.get("search")
-#         service = Services.objects.filter(content__contains=search, status=True)
-        
-#     else:
-#         service = Services.objects.filter(status=True)
-        
-#     service_paginate = Paginator(service, 1)
-#     first_page = 1
-#     last_page = service_paginate.num_pages
-
-#     try:
-#         page_number = request.GET.get("page")
-#         service = service_paginate.get_page(page_number)
-#     except:
-#         page_number = first_page
-#         service = service_paginate.get_page(first_page)
+        service_paginate = Paginator(service, 3)
+        first_page = 1
+        last_page = service_paginate.num_pages
+        try:
+            page_number = request.GET.get("page")
+            service = service_paginate.get_page(page_number)
+        except:
+            page_number = first_page
+            service = service_paginate.get_page(first_page)
     
-#     context = {
-#         "services":service,
-#         "first" : first_page,
-#         "last" : last_page
-#     }
-
+        context = {
+            "services":service,
+            "first" : first_page,
+            "last" : last_page
+        }
     
-    # return render(request, 'services/services.html', context=context)
+        return render(request, 'services/services.html', context=context)
+    else:
+        return render(request, 'registration/login.html')
+
+   
 
 
 

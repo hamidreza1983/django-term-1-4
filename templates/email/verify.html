@@ -1,0 +1,9 @@
+{% extends "mail_templated/base.tpl" %}
+
+{% block subject %}
+Hello {{ user.email }}
+{% endblock %}
+
+{% block html %}
+for verify your email click <a href="http://127.0.0.1:8000/accounts/api/v1/verify-done/{{token}}">here for 2 minuts</a>
+{% endblock %}

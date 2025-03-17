@@ -36,7 +36,6 @@ class LoginApiView(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        send_mail('email/email.html', {'user': user}, "user@test.com", ["user@user.com"])
         return Response({'token': token.key, 'email':user.email})
 
 
@@ -54,10 +53,17 @@ class SignupApiView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serialize = self.serializer_class(data=request.data)
-        serialize.is_valid(raise_exception=True)  
+        serialize.is_valid(raise_exception=True)
         serialize.save()
-        return Response({"message" : "user created successfully"}, status=status.HTTP_201_CREATED)
+        email = serialize.validated_data["email"]  
+        user = User.objects.get(email=email)
+        token = self.get_token_for_user(user)
+        send_mail('email/verify.html', {'user': user, 'token' : token}, "admin@my-site.com", [user.email])
+        return Response({"message" : "email verification send for you.please check your inbox"}, status=status.HTTP_201_CREATED)
     
+    def get_token_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
 
 class ChangePassword(GenericAPIView):
     serializer_class = ChangePasswordSerializer
@@ -101,3 +107,15 @@ class ResetPasswordDone(GenericAPIView):
         user = get_object_or_404(User, pk=user_id)
         serialize.set_pass(serialize.validated_data, user)
         return Response({"message" : "password reset successfully"}, status=status.HTTP_202_ACCEPTED)
+    
+class VerifyDone(APIView):
+
+    def get(self, request, *args, **kwargs):
+        token = kwargs.get("token")
+        user_token_obj = AccessToken(token)
+        user_id = user_token_obj["user_id"]
+        user = get_object_or_404(User, pk=user_id)
+        user.is_verified = True
+        user.save()
+        return Response({"message" : "your email verified successfully"}, status=status.HTTP_200_OK)
+
