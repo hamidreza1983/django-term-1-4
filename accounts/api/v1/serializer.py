@@ -114,3 +114,31 @@ class ChangePasswordSerializer(serializers.Serializer):
         return validated_data
 
 
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class ResetPasswordDoneSerializer(serializers.Serializer):
+    pass1 = serializers.CharField(max_length=20)
+    pass2 = serializers.CharField(max_length=20)
+
+    def validate(self, attrs):
+        pass1 = attrs["pass1"]
+        pass2 = attrs["pass2"]
+        if pass1 != pass2:
+            raise serializers.ValidationError({"details" : "pass1 and pass2 must be same and don must be same as old pass"})
+        try:
+            validate_password(pass1)
+        except exceptions.ValidationError as e:
+            raise serializers.ValidationError(
+               {
+                    "message" : list(e.messages)
+               }
+            )
+        return attrs
+    
+    def set_pass(self, validated_data, user):
+        pass1 = validated_data["pass1"]
+        user.set_password(pass1)
+        user.save()
+        return validated_data

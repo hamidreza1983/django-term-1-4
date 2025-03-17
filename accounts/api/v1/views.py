@@ -4,7 +4,9 @@ from .serializer import (
     SignupSerializer, 
     CustomeAuthTokenSerializer, 
     CustomJwtSerializer,
-    ChangePasswordSerializer
+    ChangePasswordSerializer,
+    ResetPasswordSerializer,
+    ResetPasswordDoneSerializer
 )
 from rest_framework.response import Response
 from rest_framework import status
@@ -16,6 +18,8 @@ from rest_framework_simplejwt.views import (
 )
 from django.shortcuts import  get_object_or_404
 from accounts.models import User
+from mail_templated import send_mail
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
 
 class CustomeObtainView(TokenObtainPairView):
@@ -26,11 +30,13 @@ class CustomeObtainView(TokenObtainPairView):
 
 class LoginApiView(ObtainAuthToken):
     serializer_class = CustomeAuthTokenSerializer
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
+        send_mail('email/email.html', {'user': user}, "user@test.com", ["user@user.com"])
         return Response({'token': token.key, 'email':user.email})
 
 
@@ -67,3 +73,31 @@ class ChangePassword(GenericAPIView):
         serialize.is_valid(raise_exception=True)
         serialize.change(serialize.validated_data)
         return Response({"message" : "password change successfully"}, status=status.HTTP_202_ACCEPTED)
+
+class ResetPassword(GenericAPIView):
+    serializer_class = ResetPasswordSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = ResetPasswordSerializer(data=request.data, context={"request" : request})
+        serializer.is_valid(raise_exception=True)
+        user = User.objects.get(email=serializer.validated_data["email"])
+        token = self.get_token_for_user(user)
+        send_mail('email/email.html', {'user': user, 'token' : token}, "admin@my-site.com", [user.email])
+        return Response({"message" : "email send successfully"}, status=status.HTTP_202_ACCEPTED)
+
+
+    def get_token_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+    
+class ResetPasswordDone(GenericAPIView):
+    serializer_class = ResetPasswordDoneSerializer
+
+    def post(self, request, *arg, **kwargs):
+        serialize = ResetPasswordDoneSerializer(data=request.data, context={"request" : request})
+        serialize.is_valid(raise_exception=True)
+        user_token_obj = AccessToken(kwargs["token"])
+        user_id = user_token_obj["user_id"]
+        user = get_object_or_404(User, pk=user_id)
+        serialize.set_pass(serialize.validated_data, user)
+        return Response({"message" : "password reset successfully"}, status=status.HTTP_202_ACCEPTED)
