@@ -11,7 +11,10 @@ def cart_view(request):
     for id , quantity in cart.items():
         service = Services.objects.get(id=int(id))
         quantity = int(quantity)
-        service_list.append({"service": service, "quantity": quantity, "total_price": service.price * quantity})
+        service_list.append({
+            "service": service, 
+            "quantity": quantity, 
+            "total_price": service.price * quantity})
     total = 0
     for item in service_list:
         total += item["total_price"]
