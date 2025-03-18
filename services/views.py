@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Services
 from django.core.paginator import Paginator
 from django.views.generic import ListView, DetailView
+from django.http import HttpResponseBadRequest
 
 class ServicesView(ListView):
     model = Services
@@ -30,21 +31,28 @@ class ServicesView(ListView):
         return context
     
     def post(self, request, *args, **kwargs):
-        cart = request.session.get("cart")
-        if cart is None:
-            request.session["cart"] = {}
-            request.session.modified = True
-            cart = request.session.get("cart")
-        id = int(request.POST["product_id"])
-        quantity = int(request.POST["quantity"])
+#        del request.session["cart"]
+#        request.session.modified = True
+        # دیکشنری کارت از شژن فراخوانی میشود و اگر نباشد با یک دیکشنری خالی مقدار دهی میشود
+        cart = request.session.get("cart", {})
+        # آی دی محصود و تعدادش از رکوئست پست فراخوانی میشود
+        # علت استفاده از بلاک زی این است که ممکن است گاهی دیتای دیگری در رکوئست پست ارسال شود
+        # لذا برای اینکه سرور ارور ندهد با بلاک زیر بررسی میشود
+        try:
+            id = request.POST.get("product_id", "0")
+            quantity = request.POST.get("quantity", "1")
+        except ValueError:
+            return HttpResponseBadRequest("Invalid input")
+        # اگر آی دی محصول در سبد بود به مقدار قبلی اش اضافه میشود
+        # اگر نباشد آی دی به همراه مقدارش در کارت قرار میگیرد
         if id in cart:
-            del cart[id]
-            id = int(request.POST["product_id"])
-            cart[id] = int(quantity)
-            request.session.modified = True
+            cart[id] = str(int(cart[id]) + int( quantity))
         else:
-            cart[id] = int(quantity)
-            request.session.modified = True
+            cart[id] = quantity
+        # برای اطمینان بیشتر مجدد کارت در سژن ست میشود
+        request.session["cart"] = cart 
+        # تغییرات سژن اعمال میشود
+        request.session.modified = True
         return redirect(request.path_info)
         
         
