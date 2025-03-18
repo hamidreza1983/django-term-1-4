@@ -31,6 +31,7 @@ class ServicesView(ListView):
         return context
     
     def post(self, request, *args, **kwargs):
+#       # برای خالی کردن سبد از متود زیر استفاده میشود
 #        del request.session["cart"]
 #        request.session.modified = True
         # دیکشنری کارت از شژن فراخوانی میشود و اگر نباشد با یک دیکشنری خالی مقدار دهی میشود
