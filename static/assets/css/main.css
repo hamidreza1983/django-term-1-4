@@ -1714,7 +1714,30 @@ section,
   margin-right: 8px;
   color: var(--accent-color);
 }
+.quantity-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.quantity-container button {
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+}
+
+.quantity-container input {
+  width: 40px;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/

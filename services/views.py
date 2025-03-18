@@ -7,7 +7,7 @@ class ServicesView(ListView):
     model = Services
     template_name = 'services/services.html'
     context_object_name = "services"
-    paginate_by = 3
+    paginate_by = 1
     #queryset = Services.objects.filter(status=True)#
     def get_queryset(self):
         if self.kwargs.get("category"):

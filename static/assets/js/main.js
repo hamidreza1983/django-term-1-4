@@ -59,7 +59,7 @@
       e.stopImmediatePropagation();
     });
   });
-
+  
   /**
    * Preloader
    */
@@ -116,6 +116,24 @@
       }
     });
   });
+  document.querySelectorAll(".product").forEach(product => {
+    const incrementBtn = product.querySelector(".increment");
+    const decrementBtn = product.querySelector(".decrement");
+    const quantityInput = product.querySelector(".quantity");
+
+    incrementBtn.addEventListener("click", () => {
+        let currentValue = parseInt(quantityInput.value, 10);
+        quantityInput.value = currentValue + 1;
+    });
+
+    decrementBtn.addEventListener("click", () => {
+        let currentValue = parseInt(quantityInput.value, 10);
+        if (currentValue > 1) {
+            quantityInput.value = currentValue - 1;
+        }
+    });
+});
+
 
   /**
    * Init swiper sliders

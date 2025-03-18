@@ -51,10 +51,20 @@
               </a>
               <p>{{service.truncate_chars}}</p>
             </div>
-            <p><a href={% url 'services:service-with-creator' name=service.creator.user.email %}>{{service.creator.user.email}}</a></p>
+            <div class="product">
+              <form  method="post">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value={{service.id}}> <!-- آی‌دی محصول --> 
+                <div class="quantity-container">
+                    <button type="button" class="decrement">-</button>
+                    <input type="text" name="quantity" class="quantity" value="1" readonly>
+                    <button type="button" class="increment">+</button>
+                </div>  
+                <button type="submit">Add to card</button>
+              </form>
+            </div>    
           </div><!-- End Service Item -->
           {% endfor %}
-
         </div>
       
 

@@ -31,6 +31,7 @@ class Services(models.Model):
     catalog_file = models.TextField(max_length=250)
     catalog_doc = models.TextField(max_length=250)
     status = models.BooleanField(default=False)
+    price = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
