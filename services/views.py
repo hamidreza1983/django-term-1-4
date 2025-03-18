@@ -7,7 +7,7 @@ class ServicesView(ListView):
     model = Services
     template_name = 'services/services.html'
     context_object_name = "services"
-    paginate_by = 1
+    paginate_by = 5
     #queryset = Services.objects.filter(status=True)#
     def get_queryset(self):
         if self.kwargs.get("category"):
@@ -28,6 +28,26 @@ class ServicesView(ListView):
         context ['first'] = first
         context ['last'] = last
         return context
+    
+    def post(self, request, *args, **kwargs):
+        cart = request.session.get("cart")
+        if cart is None:
+            request.session["cart"] = {}
+            request.session.modified = True
+            cart = request.session.get("cart")
+        id = int(request.POST["product_id"])
+        quantity = int(request.POST["quantity"])
+        if id in cart:
+            del cart[id]
+            id = int(request.POST["product_id"])
+            cart[id] = int(quantity)
+            request.session.modified = True
+        else:
+            cart[id] = int(quantity)
+            request.session.modified = True
+        return redirect(request.path_info)
+        
+        
     
 
 #def services(request, **kwargs):

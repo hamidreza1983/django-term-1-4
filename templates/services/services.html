@@ -48,6 +48,7 @@
               </div>
               <a href={% url 'services:services-detail' pk=service.id %} class="stretched-link">
                 <h3>{{service.title}}</h3>
+                <p><h3>{{service.price}}</h3></p>
               </a>
               <p>{{service.truncate_chars}}</p>
             </div>
