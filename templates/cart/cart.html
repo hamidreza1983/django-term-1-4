@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'title' %}services{% endblock 'title' %}
+{% block 'content' %}
+<br>
+<br>
+<br>
+<br>
+<h1>your itmes</h1>
+{% for item in service_list %}
+    <p>{{item.service.title}}</p>
+    <p>{{item.service.price}}</p>
+    <p>{{item.quantity}}</p>
+    <p>{{item.total_price}}</p>
+    <p>========================================================================</p>
+{% endfor %}
+<p>*************************************************</p>
+<h1>your total price is {{ total }}</h1>
+<p>*************************************************</p>
+<br>
+<br>
+<br>
+<br>
+{% endblock 'content' %}
+

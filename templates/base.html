@@ -50,6 +50,7 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
+          <li><a href={% url 'cart:cart_view' %}>See {{ cart_items }} items in your Cart</a></li>
           <li><a href={% url 'root:home' %} class="active">Home</a></li>
           <li><a href={% url 'root:about' %}>About</a></li>
           <li><a href={% url 'services:services' %}>Services</a></li>

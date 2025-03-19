@@ -11,5 +11,6 @@ def general_context(request):
     context = {
         'categories' : Category.objects.all(),
         "profile" : profile,
+        "cart_items" : len(request.session.get("cart", {})),
     }
     return context

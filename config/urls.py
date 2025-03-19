@@ -53,6 +53,7 @@ urlpatterns = [
     path("services/", include("services.urls")),
     path("properties/", include("properties.urls")),
     path("accounts/", include("accounts.urls")),
+    path("cart/", include("cart.urls")),
     path(
     "sitemap.xml",
     sitemap,

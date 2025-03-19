@@ -32,8 +32,8 @@ class ServicesView(ListView):
     
     def post(self, request, *args, **kwargs):
 #       # برای خالی کردن سبد از متود زیر استفاده میشود
-#        del request.session["cart"]
-#        request.session.modified = True
+#       del request.session["cart"]
+#       request.session.modified = True
         # دیکشنری کارت از شژن فراخوانی میشود و اگر نباشد با یک دیکشنری خالی مقدار دهی میشود
         cart = request.session.get("cart", {})
         # آی دی محصود و تعدادش از رکوئست پست فراخوانی میشود
