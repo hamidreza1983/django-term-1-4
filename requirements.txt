@@ -15,16 +15,21 @@ idna==3.10
 importlib_metadata==8.6.1
 importlib_resources==6.5.2
 inflection==0.5.1
+isodate==0.7.2
 jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
+lxml==5.3.1
 Markdown==3.7
 packaging==24.2
 pillow==11.0.0
+platformdirs==4.3.6
 PyJWT==2.9.0
 pytz==2025.1
 PyYAML==6.0.2
 referencing==0.36.2
 requests==2.32.3
+requests-file==2.1.0
+requests-toolbelt==1.0.0
 rpds-py==0.23.1
 sqlparse==0.5.1
 swagger-spec-validator==3.0.4
@@ -32,4 +37,5 @@ typing_extensions==4.12.2
 tzdata==2024.2
 uritemplate==4.1.1
 urllib3==2.2.3
+zeep==4.3.1
 zipp==3.21.0

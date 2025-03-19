@@ -31,8 +31,8 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     service = models.ForeignKey('services.Services', on_delete=models.CASCADE)
-    price = models.IntegerField()
-    quantity = models.IntegerField()
+    price = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=1)
 
     def __str__(self):
         return f"{self.quantity} of {self.service.title}"

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'mail_templated',
     'cart',
+    'payment',
     
 ]
 SITE_ID = 1

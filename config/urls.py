@@ -54,6 +54,7 @@ urlpatterns = [
     path("properties/", include("properties.urls")),
     path("accounts/", include("accounts.urls")),
     path("cart/", include("cart.urls")),
+    path("payment/", include("payment.urls")),
     path(
     "sitemap.xml",
     sitemap,

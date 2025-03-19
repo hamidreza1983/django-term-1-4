@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block 'title' %}services{% endblock 'title' %}
+{% block 'content' %}
+<br>
+<h4>checkout</h4>
+<br>
+<br>
+<br>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Go Payment</button>
+</form>
+{% endblock 'content' %}
