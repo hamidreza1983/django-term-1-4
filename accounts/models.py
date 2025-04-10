@@ -1,5 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin, BaseUserManager, UserManager
+from django.contrib.auth.models import (
+    AbstractUser,
+    AbstractBaseUser,
+    PermissionsMixin,
+    BaseUserManager,
+    UserManager,
+)
 
 # Create your models here.
 
@@ -10,6 +16,7 @@ from django.contrib.auth.models import AbstractUser, AbstractBaseUser, Permissio
 
 #     def __str__(self):
 #         return self.username
+
 
 class CustomeUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
@@ -41,6 +48,7 @@ class CustomeUserManager(BaseUserManager):
             raise ValueError(("Superuser must have is_verified=True."))
         return self.create_user(email, password, **extra_fields)
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
@@ -55,7 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
+
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -67,5 +75,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.email
-
-

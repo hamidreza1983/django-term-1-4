@@ -1,6 +1,12 @@
 from django.urls import path
-from .views import contactus, AgentsView, HomeView, AboutView, GoogleView, test
-
+from .views import (
+    contactus,
+    AgentsView,
+    HomeView,
+    AboutView,
+    GoogleView,
+    test,
+)
 
 
 app_name = "root"

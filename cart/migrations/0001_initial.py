@@ -11,34 +11,79 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('services', '0001_initial'),
+        ("services", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('phone', models.CharField(max_length=15)),
-                ('address', models.TextField()),
-                ('postal_code', models.CharField(max_length=10)),
-                ('is_paid', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('zarinpal_authority', models.CharField(blank=True, max_length=100, null=True)),
-                ('zarinpal_refid', models.CharField(blank=True, max_length=100, null=True)),
-                ('zarinpal_data', models.TextField(blank=True, null=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("phone", models.CharField(max_length=15)),
+                ("address", models.TextField()),
+                ("postal_code", models.CharField(max_length=10)),
+                ("is_paid", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "zarinpal_authority",
+                    models.CharField(
+                        blank=True, max_length=100, null=True
+                    ),
+                ),
+                (
+                    "zarinpal_refid",
+                    models.CharField(
+                        blank=True, max_length=100, null=True
+                    ),
+                ),
+                ("zarinpal_data", models.TextField(blank=True, null=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='OrderItem',
+            name="OrderItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('price', models.IntegerField(default=0)),
-                ('quantity', models.IntegerField(default=1)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='cart.order')),
-                ('service', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='services.services')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("price", models.IntegerField(default=0)),
+                ("quantity", models.IntegerField(default=1)),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="items",
+                        to="cart.order",
+                    ),
+                ),
+                (
+                    "service",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="services.services",
+                    ),
+                ),
             ],
         ),
     ]

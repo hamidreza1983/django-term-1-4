@@ -11,12 +11,14 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
 class Special_services(models.Model):
     service = models.CharField(max_length=250)
     status = models.BooleanField(default=True)
 
     def __str__(self):
         return self.service
+
 
 class Services(models.Model):
     title = models.CharField(max_length=200)
@@ -35,10 +37,10 @@ class Services(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def truncate_chars(self):
         return self.content[:20]
-    
+
 
 class Comments(models.Model):
     service = models.ForeignKey(Services, on_delete=models.CASCADE)

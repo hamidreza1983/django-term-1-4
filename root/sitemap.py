@@ -1,4 +1,4 @@
-from django.contrib.sitemaps import  Sitemap
+from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
 
@@ -17,4 +17,3 @@ class RootStaticUrl(Sitemap):
 
     def location(self, items):
         return reverse(items)
-

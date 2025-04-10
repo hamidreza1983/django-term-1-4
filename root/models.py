@@ -10,12 +10,14 @@ class Ability(models.Model):
     def __str__(self) -> str:
         return self.name
 
+
 class Score(models.Model):
     count = models.IntegerField(default=5)
 
     def __str__(self):
         return str(self.count)
-    
+
+
 class Testimonials(models.Model):
     title = models.CharField(max_length=30)
     logo = models.ImageField(upload_to="tester", default="default.jpg")
@@ -30,7 +32,7 @@ class Testimonials(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def stars_count(self):
         return range(self.stars.count)
 
@@ -45,7 +47,6 @@ class Agents(models.Model):
     linkedin = models.CharField(max_length=220)
     status = models.BooleanField(default=False)
 
-
     def __str__(self):
         return self.user.email
 
@@ -58,4 +59,3 @@ class ContactUs(models.Model):
 
     def __str__(self):
         return self.name
-    

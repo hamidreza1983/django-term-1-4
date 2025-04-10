@@ -3,16 +3,20 @@ from root.models import Agents
 
 # Create your models here.
 
+
 class Type(models.Model):
-    title  = models.CharField(max_length=150)
+    title = models.CharField(max_length=150)
+
     def __str__(self):
         return self.title
+
 
 class Method(models.Model):
-    title  = models.CharField(max_length=150)
+    title = models.CharField(max_length=150)
 
     def __str__(self):
         return self.title
+
 
 class Properties(models.Model):
     image1 = models.ImageField(upload_to="property", default="default.jpg")

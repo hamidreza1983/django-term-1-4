@@ -15,57 +15,125 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Ability',
+            name="Ability",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='ContactUs',
+            name="ContactUs",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('email', models.EmailField(max_length=254)),
-                ('subject', models.CharField(max_length=100)),
-                ('message', models.TextField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("email", models.EmailField(max_length=254)),
+                ("subject", models.CharField(max_length=100)),
+                ("message", models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='Score',
+            name="Score",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('count', models.IntegerField(default=5)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("count", models.IntegerField(default=5)),
             ],
         ),
         migrations.CreateModel(
-            name='Testimonials',
+            name="Testimonials",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=30)),
-                ('logo', models.ImageField(default='default.jpg', upload_to='tester')),
-                ('content', models.TextField()),
-                ('domain', models.CharField(max_length=30)),
-                ('status', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('stars', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='root.score')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=30)),
+                (
+                    "logo",
+                    models.ImageField(
+                        default="default.jpg", upload_to="tester"
+                    ),
+                ),
+                ("content", models.TextField()),
+                ("domain", models.CharField(max_length=30)),
+                ("status", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "stars",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="root.score",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='Agents',
+            name="Agents",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(default='default.jpg', upload_to='agent')),
-                ('twitter', models.CharField(max_length=220)),
-                ('instagram', models.CharField(max_length=220)),
-                ('facebook', models.CharField(max_length=220)),
-                ('linkedin', models.CharField(max_length=220)),
-                ('status', models.BooleanField(default=False)),
-                ('ability', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='root.ability')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "image",
+                    models.ImageField(
+                        default="default.jpg", upload_to="agent"
+                    ),
+                ),
+                ("twitter", models.CharField(max_length=220)),
+                ("instagram", models.CharField(max_length=220)),
+                ("facebook", models.CharField(max_length=220)),
+                ("linkedin", models.CharField(max_length=220)),
+                ("status", models.BooleanField(default=False)),
+                (
+                    "ability",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="root.ability",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

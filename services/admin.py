@@ -7,6 +7,4 @@ admin.site.register(Category)
 admin.site.register(Comments)
 
 
-
-
 # Register your models here.

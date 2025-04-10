@@ -6,4 +6,4 @@ class CheckoutForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['phone', 'address', 'postal_code']
+        fields = ["phone", "address", "postal_code"]

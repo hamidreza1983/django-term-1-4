@@ -2,17 +2,24 @@
 # from rest_framework.decorators import api_view, permission_classes
 from services.models import Services, Comments
 from .serializer import ServiceSerializer, CommentSerializer
+
 # from rest_framework import status
 # from django.shortcuts import  get_object_or_404
-from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import (
+    IsAdminUser,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+    AllowAny,
+)
 from .permissions import IsAdminOrReadOnly
 from rest_framework.viewsets import ViewSet, ModelViewSet
-#from rest_framework.views import APIView
+
+# from rest_framework.views import APIView
 # from rest_framework.mixins import (
 #     ListModelMixin,
-#     CreateModelMixin, 
-#     RetrieveModelMixin, 
-#     UpdateModelMixin, 
+#     CreateModelMixin,
+#     RetrieveModelMixin,
+#     UpdateModelMixin,
 #     DestroyModelMixin
 # )
 # from rest_framework.generics import (
@@ -27,6 +34,7 @@ from rest_framework.viewsets import ViewSet, ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
+
 class ServiceView(ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = ServiceSerializer
@@ -34,7 +42,6 @@ class ServiceView(ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     ordering_fields = ["id", "created_at"]
     search_fields = ["title", "category__title"]
-
 
 
 # class ServiceView(ViewSet):
@@ -46,19 +53,19 @@ class ServiceView(ModelViewSet):
 #         service = Services.objects.all()
 #         serialize = self.serializer_class(service, many=True)
 #         return Response(serialize.data, status=status.HTTP_200_OK)
-    
+
 #     def create(self, request, *args, **kwargs):
 #         serilize = self.serializer_class(data=request.data)
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 #     def retrieve(self, request, *args, **kwargs):
 #         pk = kwargs['pk']
 #         service = get_object_or_404(Services, id=pk)
 #         serilize = self.serializer_class(service)
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 #     def update(self, request, *args, **kwargs):
 #         pk = kwargs['pk']
 #         service = get_object_or_404(Services, id=pk)
@@ -66,24 +73,20 @@ class ServiceView(ModelViewSet):
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 #     def destroy(self, request, *args, **kwargs):
 #         pk = kwargs['pk']
 #         service = get_object_or_404(Services, id=pk)
-        
+
 #         service.delete()
 #         return Response ({"message" : "object deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-    
-
-  
-
 
 
 # class ListServiceView(ListAPIView, CreateAPIView):
 #     permission_classes = [IsAdminOrReadOnly]
 #     serializer_class = ServiceSerializer
 #     queryset = Services.objects.all()
-  
+
 
 # class DetailServiceView(RetrieveAPIView, UpdateAPIView, DestroyAPIView):
 
@@ -103,10 +106,10 @@ class ServiceView(ModelViewSet):
 
 #     def get(self, request, *args, **kwargs):
 #         return super().list(request, *args, **kwargs)
-          
+
 #     def post(self, request, *args, **kwargs):
 #         return super().create(request, *args, **kwargs)
-    
+
 
 # class DetailServiceView(GenericAPIView, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin):
 
@@ -117,17 +120,15 @@ class ServiceView(ModelViewSet):
 
 #     def get(self, request, *args, **kwargs):
 #         return self.retrieve(request,*args, **kwargs)
-          
+
 #     def put(self, request,*args, **kwargs):
 #         return self.update(request,*args, **kwargs)
-    
+
 #     def patch(self, request,*args, **kwargs):
 #         return self.update(request,*args, **kwargs)
-    
+
 #     def delete(self, request,*args, **kwargs):
 #         return self.destroy(request,*args, **kwargs)
-
-
 
 
 # class ListServiceView(GenericAPIView):
@@ -142,14 +143,14 @@ class ServiceView(ModelViewSet):
 #         services = self.get_queryset()
 #         serilize = self.serializer_class(services, many=True)
 #         return Response (serilize.data, status=status.HTTP_200_OK)
-          
+
 
 #     def post(self, request):
 #         serilize = self.serializer_class(data=request.data)
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 
 # class DetailServiceView(GenericAPIView):
 
@@ -159,7 +160,7 @@ class ServiceView(ModelViewSet):
 #     def get_queryset(self):
 #         pk = self.request.parser_context['kwargs']['pk']
 #         return get_object_or_404(Services, id=pk)
-        
+
 #     def get(self, request, **kwargs):
 #         service = self.get_queryset()
 #         serilize = self.serializer_class(service)
@@ -168,7 +169,7 @@ class ServiceView(ModelViewSet):
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)   return Response (serilize.data, status=status.HTTP_200_OK)
-          
+
 
 #     def put(self, request, **kwargs):
 #         service = self.get_queryset()
@@ -176,14 +177,14 @@ class ServiceView(ModelViewSet):
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 #     def patch(self, request, **kwargs):
 #         service = self.get_queryset()
 #         serilize = self.serializer_class(service, data=request.data)
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 #     def delete(self, request, **kwargs):
 #         service = self.get_queryset()
 #         service.delete()
@@ -196,14 +197,14 @@ class ServiceView(ModelViewSet):
 #         services = Services.objects.all()
 #         serilize = ServiceSerializer(services, many=True)
 #         return Response (serilize.data, status=status.HTTP_200_OK)
-          
+
 
 #     def post(self, request):
 #         serilize = ServiceSerializer(data=request.data)
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 
 # class DetailServiceView(APIView):
 #     permission_classes = [IsAdminOrReadOnly]
@@ -212,7 +213,7 @@ class ServiceView(ModelViewSet):
 #         services = get_object_or_404(Services, id=kwargs.get('pk'))
 #         serilize = ServiceSerializer(services)
 #         return Response (serilize.data, status=status.HTTP_200_OK)
-          
+
 
 #     def put(self, request, **kwargs):
 #         service = get_object_or_404(Services, id=kwargs.get('pk'))
@@ -220,20 +221,18 @@ class ServiceView(ModelViewSet):
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 #     def patch(self, request, **kwargs):
 #         service = get_object_or_404(Services, id=kwargs.get('pk'))
 #         serilize = ServiceSerializer(service, data=request.data)
 #         serilize.is_valid(raise_exception=True)
 #         serilize.save()
 #         return Response (serilize.data, status=status.HTTP_201_CREATED)
-    
+
 #     def delete(self, request, **kwargs):
 #         service = get_object_or_404(Services, id=kwargs.get('pk'))
 #         service.delete()
 #         return Response ({"message" : "object deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-
-        
 
 
 # @api_view(["GET", "POST"])
@@ -243,7 +242,7 @@ class ServiceView(ModelViewSet):
 #         services = Services.objects.all()
 #         serilize = ServiceSerializer(services, many=True)
 #         return Response (serilize.data, status=status.HTTP_200_OK)
-    
+
 #     elif request.method == "POST":
 #             serilize = ServiceSerializer(data=request.data)
 #             if serilize.is_valid():
@@ -282,7 +281,7 @@ class ServiceView(ModelViewSet):
 #         comments = Comments.objects.all()
 #         serilize = CommentSerializer(comments, many=True)
 #         return Response (serilize.data, status=status.HTTP_200_OK)
-    
+
 #     elif request.method == "POST":
 #         serilize = CommentSerializer(data=request.data)
 #         if serilize.is_valid():
@@ -307,11 +306,10 @@ class ServiceView(ModelViewSet):
 #                 return Response (serialize.data, status=status.HTTP_202_ACCEPTED)
 #              else:
 #                  return Response ({"message" : "this object is not for you"}, status=status.HTTP_400_BAD_REQUEST)
-                              
+
 #         elif request.method == "DELETE":
 #              if request.user.id == comment.name.id :
 #                 comment.delete()
 #                 return Response ({"message" : "object deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 #              else:
 #                  return Response ({"message" : "this object is not for you"}, status=status.HTTP_400_BAD_REQUEST)
-

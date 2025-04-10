@@ -1,4 +1,4 @@
-from django.contrib.sitemaps import  Sitemap
+from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 from .models import Properties
 
@@ -15,7 +15,7 @@ class PropertiesStaticUrl(Sitemap):
 
     def location(self, items):
         return reverse(items)
-    
+
 
 class PropertiesDynamicUrl(Sitemap):
 
@@ -26,4 +26,4 @@ class PropertiesDynamicUrl(Sitemap):
         return Properties.objects.all()
 
     def location(self, items):
-        return "/properties/detail/%i"%items.id
+        return "/properties/detail/%i" % items.id
