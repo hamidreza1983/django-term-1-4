@@ -36,7 +36,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 
 
 class ServiceView(ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     serializer_class = ServiceSerializer
     queryset = Services.objects.all()
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
