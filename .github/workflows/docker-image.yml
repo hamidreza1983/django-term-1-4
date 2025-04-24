@@ -1,0 +1,22 @@
+name: django start CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    name: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build Docker file
+      run: docker compose up -d
+    - name: Run test
+      run: docker exec django-drf sh -c "python manage.py test ."
+    - name: Run test Api
+      run: docker exec django-drf sh -c "pytest ./accounts/api/v1/tests.py"
