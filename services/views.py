@@ -153,7 +153,7 @@ class ServiceDetails(DetailView):
                 messages.add_message(request, messages.SUCCESS, " اوکی ")
                 return redirect(request.path_info)
             else:
-                messages.add_message(request, messages.ERROR, " اوکی no")
+                messages.add_message(request, messages.ERROR, " OK no")
                 return redirect(request.path_info)
         else:
             return redirect("accounts:login")
