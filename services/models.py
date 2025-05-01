@@ -8,6 +8,7 @@ from accounts.models import User
 class Category(models.Model):
     title = models.CharField(max_length=200)
 
+
     def __str__(self):
         return self.title
 
@@ -24,14 +25,14 @@ class Services(models.Model):
     title = models.CharField(max_length=200)
     creator = models.ForeignKey(Agents, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="services", default="default.jpg")
-    content = models.TextField()
-    specials = models.ManyToManyField(Special_services)
-    description = models.TextField()
+    content = models.TextField(default="text default")
+    specials = models.ManyToManyField(Special_services, null=True, blank=True)
+    description = models.TextField(default="text description")
     category = models.ManyToManyField(Category)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    catalog_file = models.TextField(max_length=250)
-    catalog_doc = models.TextField(max_length=250)
+    catalog_file = models.TextField(max_length=250, default="text catalog file")
+    catalog_doc = models.TextField(max_length=250, default="text catalog doc")
     status = models.BooleanField(default=False)
     price = models.PositiveIntegerField(default=0)
 

@@ -41,10 +41,10 @@ class Agents(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ability = models.ForeignKey(Ability, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="agent", default="default.jpg")
-    twitter = models.CharField(max_length=220)
-    instagram = models.CharField(max_length=220)
-    facebook = models.CharField(max_length=220)
-    linkedin = models.CharField(max_length=220)
+    twitter = models.CharField(max_length=220, default="#")
+    instagram = models.CharField(max_length=220, default="#")
+    facebook = models.CharField(max_length=220, default="#")
+    linkedin = models.CharField(max_length=220, default="#")
     status = models.BooleanField(default=False)
 
     def __str__(self):
