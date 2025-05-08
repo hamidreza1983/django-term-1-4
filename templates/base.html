@@ -152,11 +152,33 @@
   <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
   <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
   <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
   <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script>
+    $.get( "http://127.0.0.1:8000/services/api/v1/services/", function( data , status, jqXHR)
+     {
+      services = $("#service-list");
+      for (service of data){
+        services.append(`<div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item  position-relative">
+              <div class="icon">
+                <i class="bi bi-activity"></i>
+              </div>
+              <a href="service-details.html" class="stretched-link">
+                <h3>${service.title}</h3>
+              </a>
+              <p>${service.content}</p>
+            </div>
+          </div>`)
+      }
+      });
+  </script>
+
+  
 
   <!-- Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
