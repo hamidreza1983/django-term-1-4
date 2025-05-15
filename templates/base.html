@@ -177,6 +177,39 @@
       }
       });
   </script>
+  <script>
+    document.getElementById("contact-form").addEventListener("submit", function(e) {
+        e.preventDefault();
+    
+        const form = e.target;
+        const formData = {
+            name: form.name.value,
+            email: form.email.value,
+            subject: form.subject.value,
+            message: form.message.value,
+        };
+    
+        fetch('http://127.0.0.1:8000/api/v1/contactus/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Form submission error');
+            return response.json();
+        })
+        .then(data => {
+            alert("پیام با موفقیت ارسال شد.");
+            form.reset();
+        })
+        .catch(error => {
+            alert("خطا در ارسال پیام.");
+            console.error(error);
+        });
+    });
+    </script>
 
   
 

@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
+class HomeView(TemplateView):
     template_name = "root/index.html"
 
     def get_context_data(self, **kwargs):
@@ -62,7 +62,8 @@ from django.contrib import messages
 #            return render(request,"root/contact.html")
 #    else:
 #        return render(request,"root/contact.html")
-
+def contactusapi(request):
+    return render (request, "root/contact-api.html")
 
 def contactus(request):
     if request.method == "POST":
