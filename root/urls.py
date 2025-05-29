@@ -5,7 +5,8 @@ from .views import (
     HomeView,
     AboutView,
     GoogleView,
-    contactusapi
+    contactusapi,
+    test
 )
 
 
@@ -19,4 +20,5 @@ urlpatterns = [
     path("agent", AgentsView.as_view(), name="agent"),
     path("google", GoogleView.as_view(), name="google"),
     path("api/v1/", include("root.api.v1.urls")),
+    path("test", test, name="test"),
 ]

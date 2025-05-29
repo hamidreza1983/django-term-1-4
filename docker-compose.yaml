@@ -9,6 +9,9 @@ services:
      - 8000:8000
     volumes:
      - .:/core
+    depends_on:
+      - redis
+
   smtp4dev:
     image: rnwood/smtp4dev:v3
     ports:
@@ -20,19 +23,37 @@ services:
     environment:
       - ServerOptions__Urls=http://*:80
       - ServerOptions__HostName=smtp4dev
-  master:
-    image: locustio/locust
+
+  redis:
+    image: redis:7-alpine
     ports:
-     - "8089:8089"
+      - 6379:6379
+
+  db:
+    image: postgres:14-alpine
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_DB: web
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: H@midreza62
     volumes:
-      - ./locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --master -H http://django-drf:8000
-  
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
   worker:
-    image: locustio/locust
+    build: .
+    command: celery -A config worker -l INFO
     volumes:
-      - ./locust:/mnt/locust
-    command: -f /mnt/locust/locustfile.py --worker --master-host master
+      - .:/core
+    depends_on:
+      - redis
+      - backend
+
+
+  
 
 volumes:
   smtp4dev-data:
+  postgres_data:

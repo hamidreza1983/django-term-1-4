@@ -6,26 +6,32 @@ from django.views.generic import TemplateView, RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from .models import ContactUs
+from .forms import ContactUsForm
+from django.contrib import messages
+from django.http import HttpResponse
+import time
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 
+#method_decorator(cache_page(60 * 2), name="dispatch")
 class HomeView(TemplateView):
     template_name = "root/index.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["services"] = Services.objects.filter(status=True)[:3]
+        services = Services.objects.filter(status=True)[:3]
+        services_cache = cache.get("services")
+        if services_cache is None:
+            cache.set("services", services, 60 * 2)
+        context["services"] = cache.get("services")
         context["agents"] = Agents.objects.filter(status=True)[:3]
         context["testers"] = Testimonials.objects.filter(status=True)
         return context
 
 
-@api_view(["GET"])
-def test(request):
-    return Response(
-        {
-            "name": "hamid reza",
-        }
-    )
 
 
 # @login_required
@@ -40,10 +46,11 @@ def test(request):
 #     }
 #     return render(request,"root/index.html", context=context)
 
-
-from .models import ContactUs
-from .forms import ContactUsForm
-from django.contrib import messages
+from .tasks import send_email
+# @cache_page(60 * 2)
+def test(request):
+    send_email.delay()
+    return HttpResponse("<h1>hello cache</h1>")
 
 # def contactus(request):
 #    if request.method == "POST":
@@ -56,7 +63,7 @@ from django.contrib import messages
 #            contact.message = request.POST.get("message")
 #            contact.save()
 #            messages.add_message(request, messages.SUCCESS, "your contact received successfully")
-#            return render(request,"root/contact.html")
+#            return render@method_decorator(cache_page(60 * 2), name="dispatch")(request,"root/contact.html")
 #        else:
 #            messages.add_message(request, messages.ERROR, "your input data is not valid")
 #            return render(request,"root/contact.html")
@@ -65,6 +72,7 @@ from django.contrib import messages
 def contactusapi(request):
     return render (request, "root/contact-api.html")
 
+@cache_page(60 * 2)
 def contactus(request):
     if request.method == "POST":
         form = ContactUsForm(request.POST)
@@ -109,10 +117,10 @@ class AboutView(TemplateView):
     template_name = "root/about.html"
 
 
-# def aboutus(request):
+# def aboutus(request):@method_decorator(cache_page(60 * 2), name="dispatch")
 #     return render(request,"root/about.html")
 
-
+@method_decorator(cache_page(60 * 2), name="dispatch")
 class AgentsView(TemplateView):
     template_name = "root/agents.html"
 
