@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "payment",
     "corsheaders",
     'django_celery_results',
+    'django_celery_beat',
 ]
 SITE_ID = 1
 
@@ -112,14 +113,21 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'web',
         'USER': 'admin',
-        'PASSWORD': 'H@midreza62',
+        'PASSWORD': 'admin',
         'HOST': 'db',
         'PORT': '5432',
     }
 }
 
 CELERY_BROKER_URL = "redis://redis:6379/1"
-CELERY_RESULT_BACKEND = "db+postgresql://admin:H%21midreza62@db:5432/web"
+CELERY_RESULT_BACKEND = "db+postgresql://admin:admin@db:5432/web"
+
+CELERY_BEAT_SCHEDULE = {
+    'send-adv-every-10-seconds': {
+        'task': 'root.tasks.send_adv',  # مسیر کامل تسک (باید register شده باشه)
+        'schedule': 10.0,  # هر ۱۰ ثانیه یک‌بار
+    },
+}
 
 
 

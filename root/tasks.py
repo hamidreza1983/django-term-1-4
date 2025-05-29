@@ -6,3 +6,6 @@ import time
 def send_email():
     time.sleep(5)
     print ("email send")
+
+def send_adv():
+    print ("adv send")

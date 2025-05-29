@@ -18,6 +18,8 @@ from django.core.mail import send_mail
 from django.views.generic import FormView
 import time
 from threading import Thread
+from .tasks import send_email
+
 
 
 # Create your views here.
@@ -121,15 +123,6 @@ def change_password(request):
         return render(request, "registration/change-password.html")
 
 
-def send_email(
-    title: str,
-    caption: str,
-    sender: str,
-    receiver: list,
-    fail_silently=True,
-):
-    time.sleep(10)
-    send_mail(title, caption, sender, receiver, fail_silently)
 
 
 def reset_password(request):
@@ -150,25 +143,15 @@ def reset_password(request):
                 if not create:
                     Token.objects.get(user=user).delete()
                     token = Token.objects.create(user=user)
-                tr = Thread(
-                    target=send_email,
-                    args=(
-                        "Reset your password",
-                        f"""
-                    please click on link for  reset password\n
-                    http://127.0.0.1:8000/accounts/reset-password-confirm/{token.key}""",
-                        "admin@mysite.com",
-                        [user.email],
-                    ),
-                )
-                tr.start()
-                # send_email("Reset your password",
-                #     f"""
-                #     please click on link for  reset password\n
-                #     http://127.0.0.1:8000/accounts/reset-password-confirm/{token.key}""",
-                #     "admin@mysite.com",
-                #     [user.email],
-                #     fail_silently=True,)
+                send_email.delay(
+                    "Reset your password",
+                    f"""
+                     please click on link for  reset password\n
+                     http://127.0.0.1:8000/accounts/reset-password-confirm/{token.key}
+                    """,
+                    "admin@mysite.com",
+                    [user.email],
+                    )
                 return redirect("accounts:reset_password_done")
         else:
             messages.add_message(

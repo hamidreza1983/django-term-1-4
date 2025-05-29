@@ -36,11 +36,11 @@ services:
     environment:
       POSTGRES_DB: web
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: H@midreza62
+      POSTGRES_PASSWORD: admin
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - 5432:5432
 
   worker:
     build: .
@@ -50,9 +50,16 @@ services:
     depends_on:
       - redis
       - backend
+  beat:
+    build: .
+    command: celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/core
+    depends_on:
+      - redis
+      - db
+      - backend
 
-
-  
 
 volumes:
   smtp4dev-data:
