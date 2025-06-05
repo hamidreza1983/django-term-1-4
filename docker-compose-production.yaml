@@ -1,0 +1,73 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    container_name: django-drf
+    command: gunicorn config.wsgi --bind 0.0.0.0:8000
+    ports:
+     - 8000:8000
+    volumes:
+     - .:/core
+     - static_volume:/core/static
+     - media_volume:/core/media
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - 6379:6379
+
+  db:
+    image: postgres:14-alpine
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_DB: web
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  worker:
+    build: .
+    command: celery -A config worker -l INFO
+    volumes:
+      - .:/core
+    depends_on:
+      - redis
+      - backend
+      - db
+  beat:
+    build: .
+    command: celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/core
+    depends_on:
+      - redis
+      - db
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/home/core/static
+      - media_volume:/home/core/media
+    depends_on:
+      - backend
+      - redis
+      - db
+
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
